@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Игра: Поймай квадрат!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    h1 {
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    #score {
+      font-size: 28px;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    #gameArea {
+      width: 400px;
+      height: 400px;
+      background-color: white;
+      border: 3px solid #333;
+      position: relative;
+      overflow: hidden;
+    }
+    .target {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Поймай квадрат!</h1>
+  <div id="score">Очки: 0</div>
+  <div id="gameArea"></div>
+
+  <script>
+    const gameArea = document.getElementById("gameArea");
+    const scoreDisplay = document.getElementById("score");
+    let score = 0;
+
+    function getRandomColor() {
+      const colors = ['#e74c3c', '#8e44ad', '#3498db', '#1abc9c', '#f1c40f', '#e67e22'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function spawnTarget() {
+      const target = document.createElement("div");
+      target.classList.add("target");
+      target.style.backgroundColor = getRandomColor();
+      target.style.left = Math.random() * 350 + "px";
+      target.style.top = Math.random() * 350 + "px";
+      gameArea.appendChild(target);
+
+      target.addEventListener("click", () => {
+        score++;
+        scoreDisplay.innerText = "Очки: " + score;
+        target.remove();
+        spawnTarget();
+      });
+
+      setTimeout(() => {
+        if (gameArea.contains(target)) {
+          target.remove();
+          spawnTarget();
+        }
+      }, 2000); // цель исчезает через 2 секунды
+    }
+
+    spawnTarget();
+  </script>
+</body>
+</html>
